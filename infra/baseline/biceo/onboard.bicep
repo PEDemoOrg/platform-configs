@@ -124,7 +124,8 @@ resource appi 'Microsoft.Insights/components@2020-02-02' = if (features.appInsig
 }
 
 // ---------- Key Vault (RBAC) ----------
-var kvName = toLower('kv-${normalizedPrefix}-${uniqueString(resourceGroup().id, normalizedPrefix)}')
+// Ensure KV name is <= 24 chars: 'kv' (2) + 8 from prefix (no hyphens) + 13 from uniqueString = 23
+var kvName = toLower('kv${take(replace(normalizedPrefix, '-', ''), 8)}${uniqueString(resourceGroup().id, normalizedPrefix)}')
 
 resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = if (features.keyVault) {
   name: kvName
@@ -147,8 +148,8 @@ resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = if (features.keyVault) {
 
 // ---------- Outputs ----------
 output vnetId string = features.vnet ? vnet.id : ''
-output workloadSubnetId string = features.vnet ? vnet::subnets[0].id : ''
-output managementSubnetId string = features.vnet ? vnet::subnets[1].id : ''
+output workloadSubnetId string = features.vnet ? resourceId('Microsoft.Network/virtualNetworks/subnets', vnet.name, 'snet-workload') : ''
+output managementSubnetId string = features.vnet ? resourceId('Microsoft.Network/virtualNetworks/subnets', vnet.name, 'snet-management') : ''
 output storageAccountId string = features.storage ? st.id : ''
 output keyVaultId string = features.keyVault ? kv.id : ''
 output logAnalyticsId string = features.logAnalytics ? law.id : ''
