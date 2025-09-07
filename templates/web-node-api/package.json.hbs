@@ -1,0 +1,25 @@
+{
+  "name": "{{repoName}}",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "{{license}}",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p .",
+    "start": "node dist/index.js",
+    "lint": "echo \"(add eslint if desired)\"",
+    "test": "node -e \"console.log('no tests yet')\""
+  },
+  "dependencies": {
+    "fastify": "^4.28.1",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2"
+  },
+  "engines": {
+    "node": ">= {{nodeVersion}}"
+  }
+}
