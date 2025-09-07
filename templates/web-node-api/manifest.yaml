@@ -1,1 +1,58 @@
+id: web-node-api
+name: "Web Node API (TypeScript + Fastify)"
+version: "0.1.0"
+description: >
+  Minimal Node.js (TypeScript) Fastify API with health endpoint, CI workflow,
+  devcontainer, and optional Dockerfile.
 
+inputs:
+  - key: serviceName
+    title: "Service Name (human-readable)"
+    required: true
+    description: "Displayed service name (used in README, logs)."
+  - key: ownerEmail
+    title: "Owner Email"
+    required: true
+    description: "Primary point of contact for this service."
+  - key: repoName
+    title: "Repository name (kebab-case)"
+    required: false
+    pattern: "^[a-z0-9-]+$"
+    description: "Defaults to projectName lowercased in Developer MCP."
+  - key: nodeVersion
+    title: "Node major version"
+    required: false
+    default: "20"
+    enum: ["20", "22"]
+  - key: port
+    title: "Default HTTP port"
+    required: false
+    default: 3000
+  - key: docker
+    title: "Include Dockerfile"
+    required: false
+    default: true
+  - key: enableHealth
+    title: "Add /health endpoint"
+    required: false
+    default: true
+  - key: license
+    title: "License"
+    required: false
+    default: "MIT"
+    enum: ["MIT", "Apache-2.0", "BSD-3-Clause", "UNLICENSED"]
+
+actions:
+  github:
+    createRepo: true
+    repoNameFrom: "repoName"
+    private: true
+    defaultBranch: "main"
+    addCodeowners: true
+    enableSecurity: true
+    protectMain: true
+
+controls:
+  - "CM-2"
+  - "CM-3"
+  - "SA-11"
