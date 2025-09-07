@@ -1,0 +1,22 @@
+{
+  "name": "{{serviceName}} (Node {{nodeVersion}})",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:{{nodeVersion}}",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/azure-cli:1": {}
+  },
+  "postCreateCommand": "pnpm i",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "forwardPorts": [{{port}}],
+  "containerEnv": {
+    "PORT": "{{port}}",
+    "SERVICE_NAME": "{{serviceName}}"
+  }
+}
