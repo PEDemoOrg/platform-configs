@@ -1,0 +1,24 @@
+import 'dotenv/config';
+import Fastify from 'fastify';
+
+const app = Fastify({ logger: true });
+
+const SERVICE_NAME = process.env.SERVICE_NAME || '{{serviceName}}';
+const PORT = Number(process.env.PORT || {{port}});
+
+app.get('/', async () => {
+  return { service: SERVICE_NAME, ok: true };
+});
+
+{{#if enableHealth}}
+app.get('/health', async () => {
+  return { status: 'healthy', ts: new Date().toISOString() };
+});
+{{/if}}
+
+app.listen({ port: PORT, host: '0.0.0.0' })
+  .then(() => app.log.info({ port: PORT }, `listening`))
+  .catch((err) => {
+    app.log.error(err, 'failed to start');
+    process.exit(1);
+  });
